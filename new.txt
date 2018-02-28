@@ -1,8 +1,8 @@
 这是一个新文件
 update again
 
-#include<stdlib.h></stdlib.h>
-#include<stdio.h></stdio.h>
+#include<stdlib.h>
+#include<stdio.h>
 
 int main(int argc,char *argv[])
 
