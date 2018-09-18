@@ -1,0 +1,74 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.neighbors import KNeighborsClassifier
+import sys 
+sys.path.append('F:/GDUT/机器学习/module')  #导入模块的路径
+from MLlearn import KNN_Classifer
+from pylab import mpl
+
+
+mpl.rcParams['font.sans-serif'] = [u'SimHei']
+mpl.rcParams['axes.unicode_minus'] = False
+    
+#分类结果显示函数
+def Classifiershow(x,y):
+    if y==0:
+       plt.scatter(x[y==0,0], x[y==0,1], s=80, color='r', marker='+')
+    if y==1:
+       plt.scatter(x[y==1,0], x[y==1,1], s=80, color='b', marker='+') 
+    if y==2:
+       plt.scatter(x[y==2,0], x[y==2,1], s=80, color='g', marker='+')    
+    plt.show()
+    return   
+
+#读取数据集
+iris = datasets.load_iris()
+
+#划分数据集
+print(iris.data)
+x = iris.data[:,:2]
+y = iris.target
+
+#画图
+plt.figure()
+plt.title('分类前')
+plt.scatter(x[y==0,0], x[y==0,1], color='r') # y==0作为索引的第0列和第1列
+plt.scatter(x[y==1,0], x[y==1,1], color='b')
+plt.scatter(x[y==2,0], x[y==2,1], color='g')
+
+#待分类数据x0
+x0 = np.array([7.0,3.3])
+plt.scatter(x0[0],x0[1], color='k',s=80, marker='+')
+
+
+#使用KNN进行分类:调用sklearn库中的KNN分类器
+knn_clf = KNeighborsClassifier(n_neighbors=5)
+knn_clf.fit(x,y)
+y0_predict0 = knn_clf.predict(x0.reshape(1,-1))[0]
+print(y0_predict0)
+
+
+#分类结果显示
+plt.figure()
+plt.title('调用sklearn中的KNN算法分类后')
+plt.scatter(x[y==0,0], x[y==0,1], color='r')
+plt.scatter(x[y==1,0], x[y==1,1], color='b')
+plt.scatter(x[y==2,0], x[y==2,1], color='g')
+Classifiershow(x0,y0_predict0)
+
+        
+#使用KNN进行分类:调用自己封装的KNN算法
+knn = KNN_Classifer(k=5)
+knn.fit(x,y)
+y0_predict1 = knn.predict(x0.reshape(1,-1))[0]
+print(y0_predict1)    
+        
+#分类结果显示
+plt.figure()
+plt.title('调用自己封装的KNN算法分类后')
+plt.scatter(x[y==0,0], x[y==0,1], color='r')
+plt.scatter(x[y==1,0], x[y==1,1], color='b')
+plt.scatter(x[y==2,0], x[y==2,1], color='g')
+Classifiershow(x0,y0_predict1)        
+
